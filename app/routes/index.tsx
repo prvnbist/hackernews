@@ -7,7 +7,7 @@ export default function Index() {
 
    return (
       <div style={{ fontFamily: 'system-ui, sans-serif', lineHeight: '1.4' }}>
-         <pre>{JSON.stringify({ user, session }, null, 2)}</pre>
+         <pre>{JSON.stringify({ user }, null, 2)}</pre>
       </div>
    )
 }
