@@ -9,7 +9,11 @@
       "@remix-run/node": "^1.7.4",
       "@remix-run/react": "^1.7.4",
       "@remix-run/vercel": "^1.7.4",
+      "@supabase/auth-helpers-remix": "^0.1.2",
+      "@supabase/auth-ui-react": "^0.2.5",
+      "@supabase/supabase-js": "^2.0.5",
       "@vercel/node": "^2.4.4",
+      "isbot": "^3.6.3",
       "react": "^18.2.0",
       "react-dom": "^18.2.0"
    },
