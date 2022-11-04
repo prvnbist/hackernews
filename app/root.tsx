@@ -1,16 +1,26 @@
 import { useEffect, useState } from 'react'
 import { Auth, ThemeSupa } from '@supabase/auth-ui-react'
-import { json, LoaderFunction, MetaFunction } from '@remix-run/node'
+import { Button, LogOutIcon, UserIcon, IconButton } from 'evergreen-ui'
+import { json, LinksFunction, LoaderFunction, MetaFunction } from '@remix-run/node'
 import { createServerClient, createBrowserClient, SupabaseClient, Session } from '@supabase/auth-helpers-remix'
-import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData, useNavigate } from '@remix-run/react'
+import { NavLink, Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData, useNavigate } from '@remix-run/react'
 
-import { Database } from '../db_types'
+import { Database } from '../types/supabase'
+import css_globals from '../styles/globals.css'
+import css_normalize from '../styles/normalize.css'
 
 type UserType = {
    id: string
    email: string
    created: string
    user_id: string
+   name: string
+   bio: string
+   username: string
+   account: {
+      id: string
+      name: string
+   }
 }
 
 export type ContextType = {
@@ -60,6 +70,16 @@ export const loader: LoaderFunction = async ({ request }) => {
    )
 }
 
+export const links: LinksFunction = () => {
+   return [
+      { rel: 'stylesheet', href: css_globals },
+      { rel: 'stylesheet', href: css_normalize },
+      { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+      { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'true' },
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap' },
+   ]
+}
+
 export default function App() {
    const navigate = useNavigate()
    const [user, setUser] = useState<UserType | null>(null)
@@ -102,20 +122,30 @@ export default function App() {
             <Links />
          </head>
          <body>
-            {session && (
-               <button
-                  onClick={async () => {
-                     await supabase?.auth.signOut()
-                     navigate('/')
-                  }}
-               >
-                  Logout
-               </button>
-            )}
+            <header id="app__header">
+               <NavLink to="/">Kyuubi</NavLink>
+               <aside>
+                  {session && <IconButton icon={UserIcon} intent="success" marginRight={8} onClick={() => navigate('/profile')} />}
+                  {session && (
+                     <Button
+                        appearance="minimal"
+                        iconBefore={<LogOutIcon />}
+                        onClick={async () => {
+                           await supabase?.auth.signOut()
+                           navigate('/')
+                        }}
+                     >
+                        Logout
+                     </Button>
+                  )}
+               </aside>
+            </header>
             {supabase && !session && (
-               <Auth redirectTo="http://localhost:3004" appearance={{ theme: ThemeSupa }} supabaseClient={supabase} socialLayout="horizontal" />
+               <div style={{ margin: '0 auto', width: '100%', maxWidth: '320px' }}>
+                  <Auth redirectTo="http://localhost:3004" appearance={{ theme: ThemeSupa }} supabaseClient={supabase} socialLayout="horizontal" />
+               </div>
             )}
-            <Outlet context={context} />
+            {session && <Outlet context={context} />}
             <ScrollRestoration />
             <Scripts />
             <LiveReload />
