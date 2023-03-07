@@ -31,3 +31,20 @@ ul#posts {
 li.post {
    list-style: decimal;
 }
+
+/* .post h2 a {
+   color: #121215;
+} */
+
+.post__title:hover {
+   text-decoration: underline;
+}
+
+/* .post__title:visited {
+   color: #828282;
+} */
+
+.post__domain {
+   opacity: 0.7;
+   text-decoration: none;
+}

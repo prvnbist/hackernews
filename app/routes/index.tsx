@@ -26,7 +26,7 @@ export default function Index() {
                *, 
                account (
                   id,
-                  name
+                  username
                )
             `)
 
@@ -51,14 +51,15 @@ export default function Index() {
          <ul id="posts">
             {posts.map(post => (
                <li key={post.id} className="post">
-                  <a href={post.url} target="_blank" rel="noreferrer noopener">
-                     <Heading size={500}>
-                        {post.title} ({new URL(post.url).hostname})
-                     </Heading>
-                  </a>
-                  {post?.account?.name && (
+                  <Heading size={500}>
+                     <a href={post.url} target="_blank" rel="noreferrer noopener" className="post__title">
+                        {post.title}
+                     </a>
+                     <span className="post__domain">({new URL(post.url).hostname})</span>
+                  </Heading>
+                  {post?.account?.username && (
                      <Heading size={300} marginTop={8}>
-                        {post?.account?.name}
+                        {post?.account?.username}
                      </Heading>
                   )}
                </li>
